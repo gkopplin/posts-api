@@ -21,8 +21,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 @RunWith(MockitoJUnitRunner.class)
-@SpringBootTest
-public class PostServiceTest {
+public class PostServiceTests {
 
     @InjectMocks
     PostServiceImpl postService;

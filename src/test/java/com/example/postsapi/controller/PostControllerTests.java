@@ -28,8 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(MockitoJUnitRunner.class)
-@SpringBootTest
-public class PostControllerTest {
+public class PostControllerTests {
     private MockMvc mockMvc;
 
     @InjectMocks
