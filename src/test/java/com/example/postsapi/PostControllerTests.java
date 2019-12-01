@@ -1,5 +1,6 @@
-package com.example.postsapi.controller;
+package com.example.postsapi;
 
+import com.example.postsapi.controller.PostController;
 import com.example.postsapi.model.Post;
 import com.example.postsapi.service.PostService;
 import org.junit.Before;
@@ -59,7 +60,8 @@ public class PostControllerTests {
                 "\"body\":\"" + description + "\"}";
     }
 
-    private ResultActions createPostHelper() throws Exception {
+    @Test
+    public void createPost_Post_Success() throws Exception {
         RequestBuilder requestBuilder = MockMvcRequestBuilders
                 .post("/")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -68,14 +70,8 @@ public class PostControllerTests {
 
         when(postService.createPost((any()), any())).thenReturn(post);
 
-        return mockMvc.perform(requestBuilder);
-    }
-
-    @Test
-    public void createPost_Post_Success() throws Exception {
-        ResultActions result = createPostHelper();
-
-        result.andExpect(status().isOk())
+        mockMvc.perform(requestBuilder)
+                .andExpect(status().isOk())
                 .andExpect(content().json("{\"id\":1,\"title\":\"title\",\"description\":\"description\",\"user\":{\"username\":\"username\"}}"))
                 .andReturn();
 
@@ -83,7 +79,6 @@ public class PostControllerTests {
 
     @Test
     public void getPostList_ListOfPosts_Success() throws Exception {
-
         RequestBuilder requestBuilder = MockMvcRequestBuilders
                 .get("/list")
                 .contentType(MediaType.APPLICATION_JSON);
@@ -101,9 +96,6 @@ public class PostControllerTests {
 
     @Test
     public void deletePost_Post_Success() throws Exception {
-
-        createPostHelper();
-
         RequestBuilder requestBuilder = MockMvcRequestBuilders
                 .delete("/1")
                 .contentType(MediaType.APPLICATION_JSON);
@@ -131,8 +123,6 @@ public class PostControllerTests {
 
     @Test
     public void postWithPostIdExists_True_Success() throws Exception {
-        ResultActions action = createPostHelper();
-
         RequestBuilder requestBuilder = MockMvcRequestBuilders
                 .get("/1")
                 .contentType(MediaType.APPLICATION_JSON);
