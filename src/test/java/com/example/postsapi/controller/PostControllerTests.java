@@ -2,12 +2,18 @@ package com.example.postsapi.controller;
 
 import com.example.postsapi.model.Post;
 import com.example.postsapi.service.PostService;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -15,6 +21,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,20 +31,24 @@ import static org.mockito.Mockito.when;
 import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.junit.Assert.assertNotNull;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
+@WebMvcTest(PostController.class)
 public class PostControllerTests {
+
+    @Autowired
     private MockMvc mockMvc;
 
-    @InjectMocks
-    PostController postController;
+//    @InjectMocks
+//    PostController postController;
+//
+//    @Before
+//    public void init() {
+//        mockMvc = MockMvcBuilders.standaloneSetup(postController).build();
+//    }
 
-    @Before
-    public void init() {
-        mockMvc = MockMvcBuilders.standaloneSetup(postController).build();
-    }
-
-    @Before
+    @BeforeEach
     public void initializeDummyPost() {
         post.setId(1L);
         post.setTitle("title");
@@ -45,10 +56,10 @@ public class PostControllerTests {
         post.setUsername("username");
     }
 
-    @InjectMocks
+    @MockBean
     private Post post;
 
-    @Mock
+    @MockBean
     private PostService postService;
 
     private static String createPostInJson(String title, String description, String username) {
