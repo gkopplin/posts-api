@@ -1,11 +1,13 @@
 package com.example.postsapi.controller;
 
+import com.example.postsapi.exception.PostNotFoundException;
 import com.example.postsapi.model.Post;
 import com.example.postsapi.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.io.IOException;
 
 @RestController
@@ -25,23 +27,21 @@ public class PostController {
 //    }
 
     @DeleteMapping("/{id}")
-    public HttpStatus deletePost(@PathVariable long id) throws IOException {
+    public HttpStatus deletePost(@PathVariable long id) throws PostNotFoundException {
         return postService.deletePost(id);
     }
 
     @PostMapping("/")
-    public Post createPost(@RequestBody Post post, @RequestHeader("username") String username) {
+    public Post createPost(@Valid @RequestBody Post post, @RequestHeader("username") String username) {
         return postService.createPost(post, username);
     }
 
     @GetMapping("/{postId}")
-    public boolean postWithPostIdExists(@PathVariable long postId) {
+    public boolean postWithPostIdExists(@PathVariable long postId){
         try {
             Post post = postService.searchById(postId);
             return post != null;
-        } catch(Exception e) {
-            // GK: can we make this exception more specific?
-            e.printStackTrace();
+        } catch(PostNotFoundException e) {
             return false;
         }
     }

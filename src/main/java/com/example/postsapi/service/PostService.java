@@ -1,5 +1,6 @@
 package com.example.postsapi.service;
 
+import com.example.postsapi.exception.PostNotFoundException;
 import com.example.postsapi.model.Post;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,9 +12,9 @@ public interface PostService {
 
     public Iterable<Post> getAll();
 
-    public Post searchById(long id);
+    public Post searchById(long id) throws PostNotFoundException;
 
-    public HttpStatus deletePost(long id) throws IOException;
+    public HttpStatus deletePost(long id) throws PostNotFoundException;
 
     public Post createPost(Post post, String username);
 
